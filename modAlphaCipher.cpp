@@ -42,12 +42,12 @@ inline std::wstring modAlphaCipher::convert(const std::vector<int>& v)
 inline std::wstring modAlphaCipher::getValidKey(const std::wstring & ws)
 {
     if (ws.empty())
-        throw cipher_error("Пустой ключ");
+        throw cipher_error("Empty key");
     std::wstring tmp(ws);
     std::string s = codec.to_bytes(ws);
     for (auto & c:tmp) {
         if (!iswalpha(c)) {
-            throw cipher_error(std::string("Неправильный тип ключа ") + s);
+            throw cipher_error(std::string("Invalid key")+ s);
         }
         if (iswlower(c))
             c = towupper(c);
@@ -56,6 +56,7 @@ inline std::wstring modAlphaCipher::getValidKey(const std::wstring & ws)
 }
 inline std::wstring modAlphaCipher::getValidOpenText(const std::wstring & ws)
 {
+
     std::wstring tmp;
     for (auto c:ws) {
         if (iswalpha(c)) {
@@ -66,17 +67,17 @@ inline std::wstring modAlphaCipher::getValidOpenText(const std::wstring & ws)
         }
     }
     if (tmp.empty())
-        throw cipher_error("Входной текст отстутвует");
+        throw cipher_error("Input text is missing");
     return tmp;
 }
 inline std::wstring modAlphaCipher::getValidCipherText(const std::wstring & ws)
 {
     if (ws.empty())
-        throw cipher_error("Выходной текст отстутвует");
+        throw cipher_error("Output text is missing");
     for (auto c:ws) {
         std::string s = codec.to_bytes(ws);
         if (!iswupper(c))
-            throw cipher_error(std::string("Неправильный тип выходного текста")+s);
+            throw cipher_error(std::string("Invalid text")+s);
     }
     return ws;
 }
